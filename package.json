@@ -1,19 +1,19 @@
 {
   "name": "react-zero-downtime-build",
   "version": "0.1.0",
-  "description": "Zero-downtime deployment for React applications",
+  "description": "Eliminate chunk load errors and 404s during deployments with automatic version detection and user prompts",
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "require": "./dist/index.js",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
+      "import": "./dist/index.js"
     }
   },
   "bin": {
-    "rzd-build": "./bin/rzd-build.js"
+    "rzd-build": "./bin/rzd-build.js",
+    "rzd-init": "./bin/rzd-build.js"
   },
   "repository": {
     "type": "git",
@@ -28,7 +28,15 @@
     "react",
     "deployment",
     "zero-downtime",
-    "build"
+    "build",
+    "chunk-error",
+    "404-error",
+    "version-check",
+    "hot-reload",
+    "react-scripts",
+    "create-react-app",
+    "cache-busting",
+    "auto-update"
   ],
   "homepage": "https://github.com/vksco/react-zero-downtime-build",
   "bugs": {
@@ -39,18 +47,23 @@
     "bin",
     "templates",
     "README.md",
-    "LICENSE"
+    "CHANGELOG.md"
   ],
-  "author": "",
+  "author": "vksco",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "typescript": "^5.0.0"
-  },
-  "dependencies": {
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
-    "react": "^19.2.1",
-    "react-dom": "^19.2.1"
   }
 }
