@@ -3,7 +3,15 @@
   "version": "0.1.0",
   "description": "Zero-downtime deployment for React applications",
   "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "bin": {
     "rzd-build": "./bin/rzd-build.js"
   },
@@ -13,10 +21,11 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
   },
   "keywords": ["react", "deployment", "zero-downtime", "build"],
-  "homepage":"https://github.com/vksco/react-zero-downtime-build.git",
+  "homepage":"https://github.com/vksco/react-zero-downtime-build",
   "bugs": {
     "url": "https://github.com/vksco/react-zero-downtime-build/issues"
   },
