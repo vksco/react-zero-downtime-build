@@ -1,0 +1,1 @@
+// Generate version script

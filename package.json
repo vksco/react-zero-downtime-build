@@ -1,0 +1,36 @@
+{
+  "name": "react-zero-downtime-build",
+  "version": "0.1.0",
+  "description": "Zero-downtime deployment for React applications",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "rzd-build": "./bin/rzd-build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vksco/react-zero-downtime-build.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "keywords": ["react", "deployment", "zero-downtime", "build"],
+  "homepage":"https://github.com/vksco/react-zero-downtime-build.git",
+  "bugs": {
+    "url": "https://github.com/vksco/react-zero-downtime-build/issues"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "templates",
+    "README.md",
+    "LICENSE"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}
