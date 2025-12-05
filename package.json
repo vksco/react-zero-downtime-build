@@ -24,8 +24,13 @@
     "dev": "tsc --watch",
     "prepublishOnly": "npm run build"
   },
-  "keywords": ["react", "deployment", "zero-downtime", "build"],
-  "homepage":"https://github.com/vksco/react-zero-downtime-build",
+  "keywords": [
+    "react",
+    "deployment",
+    "zero-downtime",
+    "build"
+  ],
+  "homepage": "https://github.com/vksco/react-zero-downtime-build",
   "bugs": {
     "url": "https://github.com/vksco/react-zero-downtime-build/issues"
   },
@@ -41,5 +46,11 @@
   "devDependencies": {
     "@types/node": "^20.0.0",
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1"
   }
 }
