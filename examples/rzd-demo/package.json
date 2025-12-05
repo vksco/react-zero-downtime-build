@@ -13,7 +13,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
-    "react-zero-downtime-build": "file:../.."
+    "react-zero-downtime-build": "file:../../react-zero-downtime-build-0.1.0.tgz"
   },
   "devDependencies": {
     "@types/react": "^18.2.21",
