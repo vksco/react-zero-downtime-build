@@ -2,7 +2,7 @@
  * Update prompt component - Modal-style popup for update notifications
  */
 
-import React from 'react';
+import { type FC } from 'react';
 
 export interface UpdatePromptProps {
   show: boolean;
@@ -12,7 +12,7 @@ export interface UpdatePromptProps {
   message?: string;
 }
 
-export const UpdatePrompt: React.FC<UpdatePromptProps> = ({
+export const UpdatePrompt: FC<UpdatePromptProps> = ({
   show,
   onRefresh,
   onHardRefresh,

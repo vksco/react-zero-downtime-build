@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useRef, useState, type FC, type ReactNode } from 'react';
 import { CURRENT_BUILD_ID, CURRENT_BUILD_TIME, CURRENT_COMMIT, CURRENT_VERSION } from '../version';
 
 type VersionInfo = {
@@ -28,13 +28,31 @@ const VersionContext = createContext<VersionContextState | undefined>(undefined)
 
 type ProviderProps = {
     intervalMs?: number;
-    children: React.ReactNode;
+    children: ReactNode;
+    currentBuildId?: string;
+    currentVersion?: string;
+    currentCommit?: string | null;
+    currentBuildTime?: string;
 };
 
-export const VersionProvider: React.FC<ProviderProps> = ({ intervalMs = 60_000, children }) => {
+export const VersionProvider: FC<ProviderProps> = ({
+    intervalMs = 60_000,
+    children,
+    currentBuildId = CURRENT_BUILD_ID,
+    currentVersion = CURRENT_VERSION,
+    currentCommit = CURRENT_COMMIT,
+    currentBuildTime = CURRENT_BUILD_TIME,
+}) => {
     const [latest, setLatest] = useState<VersionInfo | undefined>(undefined);
     const [updateAvailable, setUpdateAvailable] = useState<boolean>(false);
     const timerRef = useRef<number | null>(null);
+
+    const currentInfo: VersionInfo = useMemo(() => ({
+        version: currentVersion,
+        commit: currentCommit ?? null,
+        buildTime: currentBuildTime,
+        buildId: currentBuildId,
+    }), [currentVersion, currentCommit, currentBuildTime, currentBuildId]);
 
     const fetchLatest = async () => {
         try {
@@ -49,7 +67,7 @@ export const VersionProvider: React.FC<ProviderProps> = ({ intervalMs = 60_000, 
                 buildId: String(data.buildId || ''),
             };
             setLatest(normalized);
-            setUpdateAvailable(Boolean(normalized.buildId) && normalized.buildId !== defaultInfo.buildId);
+            setUpdateAvailable(Boolean(normalized.buildId) && normalized.buildId !== currentBuildId);
         } catch (_) {
             // ignore network errors; will retry on next interval
         }
@@ -64,11 +82,11 @@ export const VersionProvider: React.FC<ProviderProps> = ({ intervalMs = 60_000, 
             if (timerRef.current) window.clearInterval(timerRef.current);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [intervalMs]);
+    }, [intervalMs, currentBuildId]);
 
     const value: VersionContextState = useMemo(
         () => ({
-            current: defaultInfo,
+            current: currentInfo,
             latest,
             updateAvailable,
             checkNow: fetchLatest,
@@ -82,7 +100,7 @@ export const VersionProvider: React.FC<ProviderProps> = ({ intervalMs = 60_000, 
                 window.location.reload();
             },
         }),
-        [latest, updateAvailable]
+        [currentInfo, latest, updateAvailable]
     );
 
     return <VersionContext.Provider value={value}>{children}</VersionContext.Provider>;

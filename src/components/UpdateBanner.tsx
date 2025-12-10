@@ -2,7 +2,7 @@
  * Update banner component - Banner-style notification for updates
  */
 
-import React from 'react';
+import { type FC } from 'react';
 
 export interface UpdateBannerProps {
   show: boolean;
@@ -12,7 +12,7 @@ export interface UpdateBannerProps {
   message?: string;
 }
 
-export const UpdateBanner: React.FC<UpdateBannerProps> = ({
+export const UpdateBanner: FC<UpdateBannerProps> = ({
   show,
   onRefresh,
   onHardRefresh,
@@ -21,8 +21,8 @@ export const UpdateBanner: React.FC<UpdateBannerProps> = ({
 }) => {
   if (!show) return null;
 
-  const positionStyles = position === 'top' 
-    ? { top: 0 } 
+  const positionStyles = position === 'top'
+    ? { top: 0 }
     : { bottom: 0 };
 
   return (

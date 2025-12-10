@@ -117,7 +117,7 @@ Learn more: https://github.com/vksco/react-zero-downtime-build
 }
 
 // Main command router
-if (!command || command === '-h' || command === '--help') {
+if (command === '-h' || command === '--help') {
   showHelp();
 } else if (command === 'init' || command === 'rzd-init') {
   initCommand();
