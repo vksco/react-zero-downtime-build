@@ -58,7 +58,12 @@ export const VersionProvider: FC<ProviderProps> = ({
         try {
             const url = `/app-version.json?ts=${Date.now()}`;
             const res = await fetch(url, { cache: 'no-store' });
-            if (!res.ok) return;
+            if (!res.ok) {
+                // Explicitly reset state on fetch failure
+                setLatest(undefined);
+                setUpdateAvailable(false);
+                return;
+            }
             const data = (await res.json()) as Partial<VersionInfo>;
             const normalized: VersionInfo = {
                 version: String(data.version || ''),
@@ -69,7 +74,9 @@ export const VersionProvider: FC<ProviderProps> = ({
             setLatest(normalized);
             setUpdateAvailable(Boolean(normalized.buildId) && normalized.buildId !== currentBuildId);
         } catch (_) {
-            // ignore network errors; will retry on next interval
+            // Explicitly reset state on network errors
+            setLatest(undefined);
+            setUpdateAvailable(false);
         }
     };
 
