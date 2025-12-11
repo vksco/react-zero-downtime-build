@@ -1,6 +1,6 @@
 {
   "name": "react-zero-downtime-build",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Eliminate chunk load errors and 404s during deployments with automatic version detection and user prompts",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
