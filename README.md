@@ -32,8 +32,23 @@ When you deploy a new version of your React app:
 
 ## Installation
 
+**One-command setup** (recommended):
+
+```bash
+npx rzd-init
+```
+
+This will automatically:
+- Install `react-zero-downtime-build` package
+- Create `rzd.config.js` in your project root
+- Update your `package.json` build script to use `rzd-build`
+- Backup your original build script as `build:original`
+
+**Or install manually:**
+
 ```bash
 npm install react-zero-downtime-build
+npx rzd-init
 ```
 
 ## Quick Start
@@ -45,6 +60,7 @@ npx rzd-init
 ```
 
 This will:
+- Install the package (if not already installed)
 - Create `rzd.config.js` in your project root
 - Update your `package.json` build script to use `rzd-build`
 - Backup your original build script as `build:original`
