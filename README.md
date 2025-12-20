@@ -2,7 +2,7 @@
 
 > Eliminate chunk load errors and 404s during deployments with automatic version detection and user prompts.
 
-[![npm version](https://img.shields.io/npm/v/react-zero-downtime-build.svg)](https://www.npmjs.com/package/react-zero-downtime-build)
+[![npm version](https://img.shields.io/npm/v/@karmick/rzd.svg)](https://www.npmjs.com/package/@karmick/rzd)
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 
 ## The Problem
@@ -35,20 +35,20 @@ When you deploy a new version of your React app:
 **One-command setup** (recommended):
 
 ```bash
-npx rzd-init
+npx @karmick/rzd init
 ```
 
 This will automatically:
-- Install `react-zero-downtime-build` package
+- Install `@karmick/rzd` package
 - Create `rzd.config.js` in your project root
-- Update your `package.json` build script to use `rzd-build`
+- Update your `package.json` build script to use `rzd build`
 - Backup your original build script as `build:original`
 
 **Or install manually:**
 
 ```bash
-npm install react-zero-downtime-build
-npx rzd-init
+npm install @karmick/rzd
+npx rzd init
 ```
 
 ## Quick Start
@@ -56,13 +56,13 @@ npx rzd-init
 ### Step 1: Initialize
 
 ```bash
-npx rzd-init
+npx @karmick/rzd init
 ```
 
 This will:
 - Install the package (if not already installed)
 - Create `rzd.config.js` in your project root
-- Update your `package.json` build script to use `rzd-build`
+- Update your `package.json` build script to use `rzd build`
 - Backup your original build script as `build:original`
 
 ### Step 2: Wrap Your App
@@ -70,7 +70,7 @@ This will:
 ```tsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { VersionProvider } from 'react-zero-downtime-build';
+import { VersionProvider } from '@karmick/rzd';
 import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);
@@ -91,7 +91,7 @@ Choose between a banner or modal-style prompt:
 **Option A: Banner (Recommended)**
 
 ```tsx
-import { useVersion, UpdateBanner } from 'react-zero-downtime-build';
+import { useVersion, UpdateBanner } from '@karmick/rzd';
 
 function App() {
   const { updateAvailable, reload, hardReload } = useVersion();
@@ -113,7 +113,7 @@ function App() {
 **Option B: Modal Prompt**
 
 ```tsx
-import { useVersion, UpdatePrompt } from 'react-zero-downtime-build';
+import { useVersion, UpdatePrompt } from '@karmick/rzd';
 
 function App() {
   const { updateAvailable, reload, hardReload } = useVersion();
@@ -244,7 +244,7 @@ Modal-style dialog in center of screen.
 Build your own update notification:
 
 ```tsx
-import { useVersion } from 'react-zero-downtime-build';
+import { useVersion } from '@karmick/rzd';
 
 function CustomUpdateNotification() {
   const { updateAvailable, current, latest, reload, hardReload } = useVersion();

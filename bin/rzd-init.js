@@ -23,14 +23,14 @@ if (!fs.existsSync(packageJsonPath)) {
 }
 
 // Check if package is installed, if not, install it
-console.log('📦 Checking if react-zero-downtime-build is installed...');
+console.log('📦 Checking if @karmick/rzd is installed...');
 const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
 const isInstalled = 
-  (packageJson.dependencies && packageJson.dependencies['react-zero-downtime-build']) ||
-  (packageJson.devDependencies && packageJson.devDependencies['react-zero-downtime-build']);
+  (packageJson.dependencies && packageJson.dependencies['@karmick/rzd']) ||
+  (packageJson.devDependencies && packageJson.devDependencies['@karmick/rzd']);
 
 if (!isInstalled) {
-  console.log('📥 Installing react-zero-downtime-build...\n');
+  console.log('📥 Installing @karmick/rzd...\n');
   try {
     // Detect package manager
     let packageManager = 'npm';
@@ -42,10 +42,10 @@ if (!isInstalled) {
 
     // Install the package
     const installCmd = packageManager === 'yarn' 
-      ? 'yarn add react-zero-downtime-build'
+      ? 'yarn add @karmick/rzd'
       : packageManager === 'pnpm'
-      ? 'pnpm add react-zero-downtime-build'
-      : 'npm install react-zero-downtime-build';
+      ? 'pnpm add @karmick/rzd'
+      : 'npm install @karmick/rzd';
 
     console.log(`Running: ${installCmd}\n`);
     execSync(installCmd, { cwd, stdio: 'inherit' });
@@ -53,7 +53,7 @@ if (!isInstalled) {
   } catch (error) {
     console.error('❌ Failed to install package:', error.message);
     console.error('\nPlease install manually with:');
-    console.error('  npm install react-zero-downtime-build\n');
+    console.error('  npm install @karmick/rzd\n');
     process.exit(1);
   }
 } else {
@@ -117,7 +117,7 @@ try {
   }
 
   // Set new build script
-  updatedPackageJson.scripts.build = 'rzd-build';
+  updatedPackageJson.scripts.build = 'rzd build';
   
   fs.writeFileSync(
     packageJsonPath,
@@ -125,7 +125,7 @@ try {
     'utf-8'
   );
   console.log('✅ Updated package.json scripts');
-  console.log('   - build: "rzd-build"');
+  console.log('   - build: "rzd build"');
   if (updatedPackageJson.scripts['build:original']) {
     console.log(`   - build:original: "${updatedPackageJson.scripts['build:original']}"`);
   }

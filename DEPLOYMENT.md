@@ -1,6 +1,6 @@
 # Deployment Checklist
 
-Before publishing `react-zero-downtime-build` to npm, go through this checklist:
+Before publishing `@karmick/rzd` to npm, go through this checklist:
 
 ## Pre-Publishing Checklist
 
@@ -34,8 +34,8 @@ Before publishing `react-zero-downtime-build` to npm, go through this checklist:
 - [x] `engines` specifies Node version
 
 ### 4. CLI Tools ✅
-- [x] `rzd-init` command works
-- [x] `rzd-build` command works
+- [x] `rzd init` command works
+- [x] `rzd build` command works
 - [x] CLI shows helpful error messages
 - [x] Help text is clear and accurate
 
@@ -56,7 +56,7 @@ Before publishing `react-zero-downtime-build` to npm, go through this checklist:
 ### 7. Testing (Before Publishing)
 - [ ] Test installation locally with `npm link`
 - [ ] Create a test React app
-- [ ] Run `npx rzd-init` in test app
+- [ ] Run `npx @karmick/rzd init` in test app
 - [ ] Verify config file created
 - [ ] Test build process
 - [ ] Verify version file generated
@@ -74,10 +74,10 @@ Before publishing `react-zero-downtime-build` to npm, go through this checklist:
 npm link
 
 # In a test React app
-npm link react-zero-downtime-build
+npm link @karmick/rzd
 
 # Test initialization
-npx rzd-init
+npx @karmick/rzd init
 
 # Test build
 npm run build
@@ -135,7 +135,7 @@ npm whoami
 npm pack
 
 # 3. Inspect the tarball
-tar -tzf react-zero-downtime-build-0.1.0.tgz
+tar -tzf karmick-rzd-0.1.1.tgz
 
 # 4. Dry run
 npm publish --dry-run
@@ -144,7 +144,7 @@ npm publish --dry-run
 npm publish
 
 # 6. Verify on npm
-npm view react-zero-downtime-build
+npm view @karmick/rzd
 ```
 
 ### Post-Publishing
@@ -160,7 +160,7 @@ git push origin v0.1.0
 # 3. Test installation from npm
 mkdir test-install
 cd test-install
-npm install react-zero-downtime-build
+npm install @karmick/rzd
 ```
 
 ## Version Updates
@@ -201,7 +201,7 @@ git push && git push --tags
 If something goes wrong within 72 hours:
 
 ```bash
-npm unpublish react-zero-downtime-build@0.1.0
+npm unpublish @karmick/rzd@0.1.1
 ```
 
 ⚠️ **Warning:** Unpublishing is permanent and should only be used for critical issues.

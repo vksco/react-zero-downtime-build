@@ -55,7 +55,7 @@ function initCommand() {
     }
 
     // Set new build script
-    packageJson.scripts.build = 'rzd-build';
+    packageJson.scripts.build = 'rzd build';
     
     fs.writeFileSync(
       packageJsonPath,
@@ -63,7 +63,7 @@ function initCommand() {
       'utf-8'
     );
     console.log('✅ Updated package.json scripts');
-    console.log('   - New build script uses rzd-build wrapper');
+    console.log('   - New build script uses rzd build wrapper');
   } catch (error) {
     console.error('❌ Failed to update package.json:', error.message);
     process.exit(1);
@@ -104,8 +104,8 @@ function showHelp() {
 React Zero Downtime Build CLI
 
 Usage:
-  npx rzd-init              Initialize rzd in your project
-  npx rzd-build             Run the build process
+  npx @karmick/rzd init     Initialize rzd in your project
+  npx rzd build             Run the build process
   npm run build             Run the build (after initialization)
 
 Options:
