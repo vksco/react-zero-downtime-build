@@ -1,5 +1,5 @@
 {
-  "name": "@karmick/rzd",
+  "name": "@thisisayande/rzd",
   "version": "0.1.2",
   "description": "Eliminate chunk load errors and 404s during deployments with automatic version detection and user prompts",
   "main": "dist/index.js",
@@ -49,7 +49,7 @@
     "README.md",
     "CHANGELOG.md"
   ],
-  "author": "vksco",
+  "author": "thisisayande",
   "engines": {
     "node": ">=16.0.0"
   },

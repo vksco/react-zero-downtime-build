@@ -47,7 +47,7 @@ Options:
   -h, --help               Show this help message
   -v, --version            Show version number
 
-Note: To initialize rzd in your project, use: npx @karmick/rzd init
+Note: To initialize rzd in your project, use: npx @thisisayande/rzd init
 
 Learn more: https://github.com/vksco/react-zero-downtime-build
 `);

@@ -2,7 +2,7 @@
 
 > Eliminate chunk load errors and 404s during deployments with automatic version detection and user prompts.
 
-[![npm version](https://img.shields.io/npm/v/@karmick/rzd.svg)](https://www.npmjs.com/package/@karmick/rzd)
+[![npm version](https://img.shields.io/npm/v/@thisisayande/rzd.svg)](https://www.npmjs.com/package/@thisisayande/rzd)
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 
 ## The Problem
@@ -35,11 +35,11 @@ When you deploy a new version of your React app:
 **One-command setup** (recommended):
 
 ```bash
-npx @karmick/rzd init
+npx @thisisayande/rzd init
 ```
 
 This will automatically:
-- Install `@karmick/rzd` package
+- Install `@thisisayande/rzd` package
 - Create `rzd.config.js` in your project root
 - Update your `package.json` build script to use `rzd build`
 - Backup your original build script as `build:original`
@@ -47,7 +47,7 @@ This will automatically:
 **Or install manually:**
 
 ```bash
-npm install @karmick/rzd
+npm install @thisisayande/rzd
 npx rzd init
 ```
 
@@ -56,7 +56,7 @@ npx rzd init
 ### Step 1: Initialize
 
 ```bash
-npx @karmick/rzd init
+npx @thisisayande/rzd init
 ```
 
 This will:
@@ -70,7 +70,7 @@ This will:
 ```tsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { VersionProvider } from '@karmick/rzd';
+import { VersionProvider } from '@thisisayande/rzd';
 import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);
@@ -91,7 +91,7 @@ Choose between a banner or modal-style prompt:
 **Option A: Banner (Recommended)**
 
 ```tsx
-import { useVersion, UpdateBanner } from '@karmick/rzd';
+import { useVersion, UpdateBanner } from '@thisisayande/rzd';
 
 function App() {
   const { updateAvailable, reload, hardReload } = useVersion();
@@ -113,7 +113,7 @@ function App() {
 **Option B: Modal Prompt**
 
 ```tsx
-import { useVersion, UpdatePrompt } from '@karmick/rzd';
+import { useVersion, UpdatePrompt } from '@thisisayande/rzd';
 
 function App() {
   const { updateAvailable, reload, hardReload } = useVersion();
@@ -244,7 +244,7 @@ Modal-style dialog in center of screen.
 Build your own update notification:
 
 ```tsx
-import { useVersion } from '@karmick/rzd';
+import { useVersion } from '@thisisayande/rzd';
 
 function CustomUpdateNotification() {
   const { updateAvailable, current, latest, reload, hardReload } = useVersion();

@@ -1,6 +1,6 @@
 # Deployment Checklist
 
-Before publishing `@karmick/rzd` to npm, go through this checklist:
+Before publishing `@thisisayande/rzd` to npm, go through this checklist:
 
 ## Pre-Publishing Checklist
 
@@ -56,7 +56,7 @@ Before publishing `@karmick/rzd` to npm, go through this checklist:
 ### 7. Testing (Before Publishing)
 - [ ] Test installation locally with `npm link`
 - [ ] Create a test React app
-- [ ] Run `npx @karmick/rzd init` in test app
+- [ ] Run `npx @thisisayande/rzd init` in test app
 - [ ] Verify config file created
 - [ ] Test build process
 - [ ] Verify version file generated
@@ -74,10 +74,10 @@ Before publishing `@karmick/rzd` to npm, go through this checklist:
 npm link
 
 # In a test React app
-npm link @karmick/rzd
+npm link @thisisayande/rzd
 
 # Test initialization
-npx @karmick/rzd init
+npx @thisisayande/rzd init
 
 # Test build
 npm run build
@@ -144,7 +144,7 @@ npm publish --dry-run
 npm publish
 
 # 6. Verify on npm
-npm view @karmick/rzd
+npm view @thisisayande/rzd
 ```
 
 ### Post-Publishing
@@ -160,7 +160,7 @@ git push origin v0.1.0
 # 3. Test installation from npm
 mkdir test-install
 cd test-install
-npm install @karmick/rzd
+npm install @thisisayande/rzd
 ```
 
 ## Version Updates
@@ -201,7 +201,7 @@ git push && git push --tags
 If something goes wrong within 72 hours:
 
 ```bash
-npm unpublish @karmick/rzd@0.1.1
+npm unpublish @thisisayande/rzd@0.1.1
 ```
 
 ⚠️ **Warning:** Unpublishing is permanent and should only be used for critical issues.

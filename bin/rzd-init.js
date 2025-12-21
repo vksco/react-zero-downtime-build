@@ -23,14 +23,14 @@ if (!fs.existsSync(packageJsonPath)) {
 }
 
 // Check if package is installed, if not, install it
-console.log('📦 Checking if @karmick/rzd is installed...');
+console.log('📦 Checking if @thisisayande/rzd is installed...');
 const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
 const isInstalled = 
-  (packageJson.dependencies && packageJson.dependencies['@karmick/rzd']) ||
-  (packageJson.devDependencies && packageJson.devDependencies['@karmick/rzd']);
+  (packageJson.dependencies && packageJson.dependencies['@thisisayande/rzd']) ||
+  (packageJson.devDependencies && packageJson.devDependencies['@thisisayande/rzd']);
 
 if (!isInstalled) {
-  console.log('📥 Installing @karmick/rzd...\n');
+  console.log('📥 Installing @thisisayande/rzd...\n');
   try {
     // Detect package manager
     let packageManager = 'npm';
@@ -42,10 +42,10 @@ if (!isInstalled) {
 
     // Install the package
     const installCmd = packageManager === 'yarn' 
-      ? 'yarn add @karmick/rzd'
+      ? 'yarn add @thisisayande/rzd'
       : packageManager === 'pnpm'
-      ? 'pnpm add @karmick/rzd'
-      : 'npm install @karmick/rzd';
+      ? 'pnpm add @thisisayande/rzd'
+      : 'npm install @thisisayande/rzd';
 
     console.log(`Running: ${installCmd}\n`);
     execSync(installCmd, { cwd, stdio: 'inherit' });
@@ -53,7 +53,7 @@ if (!isInstalled) {
   } catch (error) {
     console.error('❌ Failed to install package:', error.message);
     console.error('\nPlease install manually with:');
-    console.error('  npm install @karmick/rzd\n');
+    console.error('  npm install @thisisayande/rzd\n');
     process.exit(1);
   }
 } else {
