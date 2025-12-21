@@ -4,6 +4,7 @@
 
 import * as path from 'path';
 import * as fs from 'fs';
+import { execSync } from 'child_process';
 import { readConfig } from '../utils/config-reader';
 import { Logger } from '../utils/logger';
 import { ReactScriptsAdapter } from './adapters/react-scripts';
@@ -35,7 +36,12 @@ function getAdapter(adapterName: string): BuildAdapter {
  * Generate a simple build hash
  */
 function generateBuildId(): string {
-  return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+  try {
+    return execSync('git rev-parse --short HEAD').toString().trim();
+  } catch (error) {
+    // Fallback if git is not available
+    return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+  }
 }
 
 /**
