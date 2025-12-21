@@ -25,10 +25,11 @@ When you deploy a new version of your React app:
 
 - ✅ **Adapter-based architecture** - Works with react-scripts, Vite, and Webpack
 - ✅ **Zero configuration** - Works out of the box with sensible defaults
+- ✅ **Git Integration** - Automatically captures commit author, message, and hash
+- ✅ **Premium UI** - Styled with modern glassmorphism and clear visual hierarchy
+- ✅ **No-Dismiss Enforcement** - Ensures users always stay on the latest version
 - ✅ **TypeScript support** - Full type safety
 - ✅ **Customizable UI** - Use built-in components or build your own
-- ✅ **Lightweight** - Minimal bundle impact
-- ✅ **Production-ready** - Battle-tested in production environments
 
 ## Installation
 
@@ -71,79 +72,48 @@ This will:
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { VersionProvider } from '@thisisayande/rzd';
+// Import the auto-generated version info
+import { 
+  CURRENT_VERSION, 
+  CURRENT_BUILD_ID, 
+  CURRENT_COMMIT, 
+  CURRENT_BUILD_TIME 
+} from './version';
 import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);
 
 root.render(
   <React.StrictMode>
-    <VersionProvider>
+    <VersionProvider
+      intervalMs={10000} // Check every 10 seconds
+      currentVersion={CURRENT_VERSION}
+      currentBuildId={CURRENT_BUILD_ID}
+      currentCommit={CURRENT_COMMIT}
+      currentBuildTime={CURRENT_BUILD_TIME}
+    >
       <App />
     </VersionProvider>
   </React.StrictMode>
 );
 ```
 
-### Step 3: Add Update Notification
+### Step 3: Commit and Build
 
-Choose between a banner or modal-style prompt:
+To ensure git metadata (author, message) is captured:
 
-**Option A: Banner (Recommended)**
+1. **Commit your changes**:
+   ```bash
+   git add .
+   git commit -m "feat: your amazing feature"
+   ```
 
-```tsx
-import { useVersion, UpdateBanner } from '@thisisayande/rzd';
+2. **Run the build**:
+   ```bash
+   npm run build
+   ```
 
-function App() {
-  const { updateAvailable, reload, hardReload } = useVersion();
-
-  return (
-    <>
-      <UpdateBanner
-        show={updateAvailable}
-        onRefresh={reload}
-        onHardRefresh={hardReload}
-        position="top"
-      />
-      {/* Your app content */}
-    </>
-  );
-}
-```
-
-**Option B: Modal Prompt**
-
-```tsx
-import { useVersion, UpdatePrompt } from '@thisisayande/rzd';
-
-function App() {
-  const { updateAvailable, reload, hardReload } = useVersion();
-  const [showPrompt, setShowPrompt] = React.useState(false);
-
-  React.useEffect(() => {
-    if (updateAvailable) {
-      setShowPrompt(true);
-    }
-  }, [updateAvailable]);
-
-  return (
-    <>
-      <UpdatePrompt
-        show={showPrompt}
-        onRefresh={reload}
-        onHardRefresh={hardReload}
-        onDismiss={() => setShowPrompt(false)}
-      />
-      {/* Your app content */}
-    </>
-  );
-}
-```
-
-### Step 4: Build and Deploy
-
-```bash
-npm run build
-```
+The build process will automatically fetch the latest git info and embed it into your build!
 
 The build process will automatically:
 1. Generate a version file (`app-version.json`)
@@ -192,6 +162,13 @@ Provides version checking context to your app.
 
 **Props:**
 - `intervalMs` (optional): Check interval in milliseconds (default: 60000)
+- `currentVersion` (optional): The initial version string
+- `currentBuildId` (optional): The initial build ID (git hash)
+- `currentCommit` (optional): The initial commit hash
+- `currentAuthor` (optional): The initial git author
+- `currentCommitMessage` (optional): The initial git commit message
+- `currentBuildTime` (optional): The initial build timestamp
+- `autoPrompt` (optional): Automatically show the update prompt (default: true)
 - `children`: React nodes
 
 ### useVersion Hook
@@ -219,7 +196,10 @@ Banner-style notification at top or bottom of screen.
   onRefresh={reload}
   onHardRefresh={hardReload}
   position="top"
-  message="A new version is available!"
+  message="A customized message"
+  commitAuthor="John Doe"
+  buildId="a1b2c3d"
+  commitMessage="feat: added something awesome"
 />
 ```
 
@@ -232,8 +212,10 @@ Modal-style dialog in center of screen.
   show={showPrompt}
   onRefresh={reload}
   onHardRefresh={hardReload}
-  onDismiss={() => setShowPrompt(false)}
-  message="A new version is available!"
+  message="A customized message"
+  commitAuthor="John Doe"
+  buildId="a1b2c3d"
+  commitMessage="feat: added something awesome"
 />
 ```
 
