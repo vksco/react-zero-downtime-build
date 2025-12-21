@@ -45,6 +45,28 @@ function generateBuildId(): string {
 }
 
 /**
+ * Get the latest git commit author
+ */
+function getGitAuthor(): string | null {
+  try {
+    return execSync('git log -1 --format=%an').toString().trim();
+  } catch (error) {
+    return null;
+  }
+}
+
+/**
+ * Get the latest git commit message
+ */
+function getGitCommitMessage(): string | null {
+  try {
+    return execSync('git log -1 --format=%s').toString().trim();
+  } catch (error) {
+    return null;
+  }
+}
+
+/**
  * Get package version from package.json
  */
 function getPackageVersion(): string {
@@ -73,6 +95,8 @@ function writeSourceVersionFile(versionData: AppVersion): void {
 export const CURRENT_VERSION = '${versionData.version}';
 export const CURRENT_BUILD_ID = '${versionData.buildId}';
 export const CURRENT_COMMIT = null;
+export const CURRENT_AUTHOR = ${versionData.commitAuthor ? `'${versionData.commitAuthor}'` : 'null'};
+export const CURRENT_COMMIT_MESSAGE = ${versionData.commitMessage ? `'${versionData.commitMessage.replace(/'/g, "\\'")}'` : 'null'};
 export const CURRENT_BUILD_TIME = '${new Date(versionData.timestamp).toISOString()}';
 `;
 
@@ -128,10 +152,15 @@ export async function buildWrapper(): Promise<void> {
     // Prepare version data
     const packageVersion = getPackageVersion();
     const buildId = generateBuildId();
+    const commitAuthor = getGitAuthor();
+    const commitMessage = getGitCommitMessage();
+
     const versionData: AppVersion = {
       version: packageVersion,
       timestamp: Date.now(),
       buildId: buildId,
+      commitAuthor: commitAuthor,
+      commitMessage: commitMessage,
     };
 
     // 1. Write src/version.ts BEFORE build so it gets bundled

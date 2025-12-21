@@ -56,4 +56,12 @@ export interface AppVersion {
    * Unique build identifier
    */
   buildId: string;
+  /**
+   * Git commit author (if available)
+   */
+  commitAuthor?: string | null;
+  /**
+   * Git commit message (if available)
+   */
+  commitMessage?: string | null;
 }
