@@ -1,6 +1,6 @@
 {
   "name": "@thisisayande/rzd",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Eliminate chunk load errors and 404s during deployments with automatic version detection and user prompts",
   "main": "dist/index.js",
   "type": "commonjs",
