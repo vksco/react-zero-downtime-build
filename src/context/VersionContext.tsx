@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState, type FC, type ReactNode } from 'react';
 import { CURRENT_BUILD_ID, CURRENT_BUILD_TIME, CURRENT_COMMIT, CURRENT_VERSION } from '../version';
+import { UpdatePrompt } from '../components/UpdatePrompt';
 
 type VersionInfo = {
     version: string;
@@ -33,6 +34,15 @@ type ProviderProps = {
     currentVersion?: string;
     currentCommit?: string | null;
     currentBuildTime?: string;
+    autoPrompt?: boolean;      // New: Automatically show the prompt
+    promptMessage?: string;    // New: Custom message
+    customPrompt?: FC<{        // New: Support for user-designed prompt
+        show: boolean;
+        onRefresh: () => void;
+        onHardRefresh: () => void;
+        onDismiss: () => void;
+        message?: string;
+    }>;
 };
 
 export const VersionProvider: FC<ProviderProps> = ({
@@ -42,9 +52,13 @@ export const VersionProvider: FC<ProviderProps> = ({
     currentVersion = CURRENT_VERSION,
     currentCommit = CURRENT_COMMIT,
     currentBuildTime = CURRENT_BUILD_TIME,
+    autoPrompt = true,
+    promptMessage,
+    customPrompt: CustomPrompt,
 }) => {
     const [latest, setLatest] = useState<VersionInfo | undefined>(undefined);
     const [updateAvailable, setUpdateAvailable] = useState<boolean>(false);
+    const [dismissed, setDismissed] = useState<boolean>(false);
     const timerRef = useRef<number | null>(null);
 
     const currentInfo: VersionInfo = useMemo(() => ({
@@ -110,7 +124,32 @@ export const VersionProvider: FC<ProviderProps> = ({
         [currentInfo, latest, updateAvailable]
     );
 
-    return <VersionContext.Provider value={value}>{children}</VersionContext.Provider>;
+    const showUI = autoPrompt && updateAvailable && !dismissed;
+
+    return (
+        <VersionContext.Provider value={value}>
+            {children}
+            {showUI && (
+                CustomPrompt ? (
+                    <CustomPrompt 
+                        show={true}
+                        onRefresh={value.reload}
+                        onHardRefresh={value.hardReload}
+                        onDismiss={() => setDismissed(true)}
+                        message={promptMessage}
+                    />
+                ) : (
+                    <UpdatePrompt 
+                        show={true} 
+                        onRefresh={value.reload} 
+                        onHardRefresh={value.hardReload} 
+                        onDismiss={() => setDismissed(true)}
+                        message={promptMessage}
+                    />
+                )
+            )}
+        </VersionContext.Provider>
+    );
 };
 
 export function useVersion(): VersionContextState {
