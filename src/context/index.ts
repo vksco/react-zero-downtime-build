@@ -1,2 +1,3 @@
-export { VersionProvider, useVersion, type VersionContextState } from './VersionContext';
-export { default as VersionContext } from './VersionContext';
+export { VersionProvider, VersionContext } from './VersionContext';
+export { useVersion } from './hooks';
+export type { VersionContextState, VersionInfo, ProviderProps } from './types';
