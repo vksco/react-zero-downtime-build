@@ -18,8 +18,8 @@ export class ViteAdapter extends BaseBuildAdapter {
       }
 
       const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
-      
-      const hasVite = 
+
+      const hasVite =
         (packageJson.dependencies && packageJson.dependencies['vite']) ||
         (packageJson.devDependencies && packageJson.devDependencies['vite']);
 
@@ -29,10 +29,14 @@ export class ViteAdapter extends BaseBuildAdapter {
     }
   }
 
-  getBuildCommand(config: RzdConfig): string {
+  getBuildCommand(config: RzdConfig, outputDirOverride?: string): string {
     const envString = this.getEnvString(config.env);
-    const baseCommand = config.buildCommand || 'vite build';
-    
+    let baseCommand = config.buildCommand || 'vite build';
+
+    if (outputDirOverride) {
+      baseCommand += ` --outDir ${outputDirOverride}`;
+    }
+
     return envString ? `${envString} ${baseCommand}` : baseCommand;
   }
 
@@ -40,14 +44,21 @@ export class ViteAdapter extends BaseBuildAdapter {
     return config.outputDir || 'dist';
   }
 
-  async build(config: RzdConfig): Promise<void> {
+  async build(config: RzdConfig, outputDirOverride?: string): Promise<void> {
     const { execSync } = require('child_process');
-    const command = this.getBuildCommand(config);
-    
+    const command = this.getBuildCommand(config, outputDirOverride);
+
+    // Prepare environment variables
+    const buildEnv = {
+      ...process.env,
+      ...config.env
+    };
+
     try {
       execSync(command, {
         stdio: 'inherit',
         cwd: process.cwd(),
+        env: buildEnv
       });
     } catch (error) {
       throw new Error(`Build failed: ${error}`);

@@ -37,7 +37,20 @@ function getAdapter(adapterName: string): BuildAdapter {
  */
 function generateBuildId(): string {
   try {
-    return execSync('git rev-parse --short HEAD').toString().trim();
+    const gitHash = execSync('git rev-parse --short HEAD').toString().trim();
+
+    // Check for uncommitted changes
+    try {
+      const status = execSync('git status --porcelain').toString().trim();
+      if (status) {
+        // If dirty, confirm we want a unique ID relative to the previous build
+        return `${gitHash}-dirty-${Date.now().toString(36)}`;
+      }
+    } catch (e) {
+      // Ignore status check error
+    }
+
+    return gitHash;
   } catch (error) {
     // Fallback if git is not available
     return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
@@ -126,9 +139,30 @@ function generateVersionFile(outputDir: string, versionData: AppVersion): void {
 }
 
 /**
+ * Recursive copy function to merge directories
+ */
+function copyRecursive(src: string, dest: string): void {
+  const stats = fs.statSync(src);
+  if (stats.isDirectory()) {
+    if (!fs.existsSync(dest)) {
+      fs.mkdirSync(dest, { recursive: true });
+    }
+
+    const files = fs.readdirSync(src);
+    for (const file of files) {
+      copyRecursive(path.join(src, file), path.join(dest, file));
+    }
+  } else {
+    fs.copyFileSync(src, dest);
+  }
+}
+
+/**
  * Main build wrapper function
  */
 export async function buildWrapper(): Promise<void> {
+  let tempOutputDir: string | null = null;
+
   try {
     logger.log('🚀 React Zero Downtime Build - Starting...');
 
@@ -167,19 +201,48 @@ export async function buildWrapper(): Promise<void> {
     logger.log('Updating source version...');
     writeSourceVersionFile(versionData);
 
-    // 2. Execute the build
-    logger.log('Building application...');
-    const outputDir = adapter.getOutputDir(config);
-    await adapter.build(config);
-    logger.success('Build completed successfully!');
+    // 2. Prepare directories
+    const finalOutputDir = adapter.getOutputDir(config);
+    tempOutputDir = path.join(process.cwd(), '.rzd_temp_build');
 
-    // 3. Generate version file in the output directory AFTER build
-    generateVersionFile(outputDir, versionData);
+    // Clean temp dir if it exists
+    if (fs.existsSync(tempOutputDir)) {
+      fs.rmSync(tempOutputDir, { recursive: true, force: true });
+    }
+
+    // 3. Execute the build into temp directory
+    logger.log(`Building application into temporary directory...`);
+    await adapter.build(config, tempOutputDir);
+
+    // 4. Generate version file in the TEMP directory
+    // We do this before merging so it's part of the atomic update
+    generateVersionFile(tempOutputDir, versionData);
+
+    // 5. Merge temp build into final output directory
+    logger.log(`Merging build into ${finalOutputDir} (preserving old files)...`);
+
+    // Ensure final output dir exists
+    if (!fs.existsSync(finalOutputDir)) {
+      fs.mkdirSync(finalOutputDir, { recursive: true });
+    }
+
+    copyRecursive(tempOutputDir, finalOutputDir);
 
     logger.success('✅ React Zero Downtime Build - Complete!');
+    logger.info(`Version: ${versionData.version}, Build ID: ${versionData.buildId}`);
+
   } catch (error) {
     logger.error('Build failed:', error);
     process.exit(1);
+  } finally {
+    // Cleanup temp directory
+    if (tempOutputDir && fs.existsSync(tempOutputDir)) {
+      try {
+        fs.rmSync(tempOutputDir, { recursive: true, force: true });
+      } catch (e) {
+        logger.warn('Failed to clean up temporary directory');
+      }
+    }
   }
 }
 

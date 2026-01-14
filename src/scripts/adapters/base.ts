@@ -13,12 +13,15 @@ export interface BuildAdapter {
   /**
    * Execute the build process
    */
-  build(config: RzdConfig): Promise<void>;
+  /**
+   * Execute the build process
+   */
+  build(config: RzdConfig, outputDirOverride?: string): Promise<void>;
 
   /**
    * Get the build command
    */
-  getBuildCommand(config: RzdConfig): string;
+  getBuildCommand(config: RzdConfig, outputDirOverride?: string): string;
 
   /**
    * Get the output directory
@@ -34,19 +37,19 @@ export interface BuildAdapter {
 export abstract class BaseBuildAdapter implements BuildAdapter {
   abstract name: string;
 
-  abstract getBuildCommand(config: RzdConfig): string;
-  
+  abstract getBuildCommand(config: RzdConfig, outputDirOverride?: string): string;
+
   abstract getOutputDir(config: RzdConfig): string;
-  
+
   abstract validate(): boolean;
 
-  async build(config: RzdConfig): Promise<void> {
+  async build(config: RzdConfig, outputDirOverride?: string): Promise<void> {
     throw new Error('build() method must be implemented by subclass');
   }
 
   protected getEnvString(env?: Record<string, string>): string {
     if (!env) return '';
-    
+
     return Object.entries(env)
       .map(([key, value]) => `${key}=${value}`)
       .join(' ');

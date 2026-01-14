@@ -1,9 +1,19 @@
-import { createContext, useEffect, useMemo, useRef, useState, type FC } from 'react';
+import { createContext, useContext, useEffect, useMemo, useRef, useState, type FC } from 'react';
 import { CURRENT_AUTHOR, CURRENT_BUILD_ID, CURRENT_BUILD_TIME, CURRENT_COMMIT, CURRENT_VERSION, CURRENT_COMMIT_MESSAGE } from '../version';
 import { UpdatePrompt } from '../components/UpdatePrompt';
 import type { VersionInfo, VersionContextState, ProviderProps } from './types';
 
+export type { VersionContextState };
+
 const VersionContext = createContext<VersionContextState | undefined>(undefined);
+
+export function useVersion(): VersionContextState {
+    const context = useContext(VersionContext);
+    if (!context) {
+        throw new Error('useVersion must be used within a VersionProvider');
+    }
+    return context;
+}
 
 export { VersionContext };
 
@@ -40,13 +50,13 @@ export const VersionProvider: FC<ProviderProps> = ({
         try {
             const url = `/app-version.json?ts=${Date.now()}`;
             const res = await fetch(url, { cache: 'no-store' });
-            
+
             if (!res.ok) {
                 setLatest(undefined);
                 setUpdateAvailable(false);
                 return;
             }
-            
+
             const data = await res.json();
             const normalized: VersionInfo = {
                 version: String(data.version || ''),
@@ -56,7 +66,7 @@ export const VersionProvider: FC<ProviderProps> = ({
                 buildTime: String(data.buildTime || ''),
                 buildId: String(data.buildId || ''),
             };
-            
+
             setLatest(normalized);
             // THE KEY COMPARISON: Compare buildIds
             setUpdateAvailable(Boolean(normalized.buildId) && normalized.buildId !== currentBuildId);
@@ -99,7 +109,7 @@ export const VersionProvider: FC<ProviderProps> = ({
             {children}
             {showUI && (
                 CustomPrompt ? (
-                    <CustomPrompt 
+                    <CustomPrompt
                         show={true}
                         onRefresh={value.reload}
                         onHardRefresh={value.hardReload}
@@ -110,10 +120,10 @@ export const VersionProvider: FC<ProviderProps> = ({
                         buildId={latest?.buildId}
                     />
                 ) : (
-                    <UpdatePrompt 
-                        show={true} 
-                        onRefresh={value.reload} 
-                        onHardRefresh={value.hardReload} 
+                    <UpdatePrompt
+                        show={true}
+                        onRefresh={value.reload}
+                        onHardRefresh={value.hardReload}
                         onDismiss={() => setDismissed(true)}
                         message={promptMessage}
                         commitMessage={latest?.commitMessage}

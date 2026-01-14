@@ -18,8 +18,8 @@ export class WebpackAdapter extends BaseBuildAdapter {
       }
 
       const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
-      
-      const hasWebpack = 
+
+      const hasWebpack =
         (packageJson.dependencies && packageJson.dependencies['webpack']) ||
         (packageJson.devDependencies && packageJson.devDependencies['webpack']);
 
@@ -29,10 +29,14 @@ export class WebpackAdapter extends BaseBuildAdapter {
     }
   }
 
-  getBuildCommand(config: RzdConfig): string {
+  getBuildCommand(config: RzdConfig, outputDirOverride?: string): string {
     const envString = this.getEnvString(config.env);
-    const baseCommand = config.buildCommand || 'webpack --mode production';
-    
+    let baseCommand = config.buildCommand || 'webpack --mode production';
+
+    if (outputDirOverride) {
+      baseCommand += ` --output-path ${outputDirOverride}`;
+    }
+
     return envString ? `${envString} ${baseCommand}` : baseCommand;
   }
 
@@ -40,14 +44,21 @@ export class WebpackAdapter extends BaseBuildAdapter {
     return config.outputDir || 'dist';
   }
 
-  async build(config: RzdConfig): Promise<void> {
+  async build(config: RzdConfig, outputDirOverride?: string): Promise<void> {
     const { execSync } = require('child_process');
-    const command = this.getBuildCommand(config);
-    
+    const command = this.getBuildCommand(config, outputDirOverride);
+
+    // Prepare environment variables
+    const buildEnv = {
+      ...process.env,
+      ...config.env
+    };
+
     try {
       execSync(command, {
         stdio: 'inherit',
         cwd: process.cwd(),
+        env: buildEnv
       });
     } catch (error) {
       throw new Error(`Build failed: ${error}`);
