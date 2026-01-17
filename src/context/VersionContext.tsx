@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState, type FC } from 'react';
-import { CURRENT_AUTHOR, CURRENT_BUILD_ID, CURRENT_BUILD_TIME, CURRENT_COMMIT, CURRENT_VERSION, CURRENT_COMMIT_MESSAGE } from '../version';
+import { CURRENT_AUTHOR, CURRENT_BUILD_ID, CURRENT_BUILD_TIME, CURRENT_VERSION, CURRENT_COMMIT_MESSAGE } from '../version';
 import { UpdatePrompt } from '../components/UpdatePrompt';
 import type { VersionInfo, VersionContextState, ProviderProps } from './types';
 
@@ -22,7 +22,6 @@ export const VersionProvider: FC<ProviderProps> = ({
     children,
     currentBuildId = CURRENT_BUILD_ID,
     currentVersion = CURRENT_VERSION,
-    currentCommit = CURRENT_COMMIT,
     currentAuthor = CURRENT_AUTHOR,
     currentCommitMessage = CURRENT_COMMIT_MESSAGE,
     currentBuildTime = CURRENT_BUILD_TIME,
@@ -38,12 +37,11 @@ export const VersionProvider: FC<ProviderProps> = ({
     // Current version info from props/constants
     const currentInfo: VersionInfo = useMemo(() => ({
         version: currentVersion,
-        commit: currentCommit,
         commitAuthor: currentAuthor,
         commitMessage: currentCommitMessage,
         buildTime: currentBuildTime,
         buildId: currentBuildId,
-    }), [currentVersion, currentCommit, currentAuthor, currentCommitMessage, currentBuildTime, currentBuildId]);
+    }), [currentVersion, currentAuthor, currentCommitMessage, currentBuildTime, currentBuildId]);
 
     // Fetch latest version from server
     const fetchLatest = async () => {
@@ -60,10 +58,9 @@ export const VersionProvider: FC<ProviderProps> = ({
             const data = await res.json();
             const normalized: VersionInfo = {
                 version: String(data.version || ''),
-                commit: data.commit || null,
                 commitAuthor: data.commitAuthor || null,
                 commitMessage: data.commitMessage || null,
-                buildTime: String(data.buildTime || ''),
+                buildTime: data.timestamp ? new Date(data.timestamp).toISOString() : '',
                 buildId: String(data.buildId || ''),
             };
 

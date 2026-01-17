@@ -2,7 +2,6 @@ import type { FC, ReactNode } from 'react';
 
 export type VersionInfo = {
     version: string;
-    commit?: string | null;
     commitAuthor?: string | null;
     commitMessage?: string | null;
     buildTime: string;
@@ -23,7 +22,6 @@ export type ProviderProps = {
     children: ReactNode;
     currentBuildId?: string;
     currentVersion?: string;
-    currentCommit?: string | null;
     currentAuthor?: string | null;
     currentCommitMessage?: string | null;
     currentBuildTime?: string;
