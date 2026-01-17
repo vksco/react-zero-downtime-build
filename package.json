@@ -35,6 +35,8 @@
     "hot-reload",
     "react-scripts",
     "create-react-app",
+    "vite",
+    "webpack",
     "cache-busting",
     "auto-update"
   ],
