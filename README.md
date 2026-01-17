@@ -73,11 +73,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { VersionProvider } from '@thisisayande/rzd';
 // Import the auto-generated version info
-import { 
-  CURRENT_VERSION, 
-  CURRENT_BUILD_ID, 
-  CURRENT_COMMIT, 
-  CURRENT_BUILD_TIME 
+import {
+  CURRENT_VERSION,
+  CURRENT_BUILD_ID,
+  CURRENT_BUILD_TIME
 } from './version';
 import App from './App';
 
@@ -89,7 +88,6 @@ root.render(
       intervalMs={10000} // Check every 10 seconds
       currentVersion={CURRENT_VERSION}
       currentBuildId={CURRENT_BUILD_ID}
-      currentCommit={CURRENT_COMMIT}
       currentBuildTime={CURRENT_BUILD_TIME}
     >
       <App />
@@ -164,7 +162,6 @@ Provides version checking context to your app.
 - `intervalMs` (optional): Check interval in milliseconds (default: 60000)
 - `currentVersion` (optional): The initial version string
 - `currentBuildId` (optional): The initial build ID (git hash)
-- `currentCommit` (optional): The initial commit hash
 - `currentAuthor` (optional): The initial git author
 - `currentCommitMessage` (optional): The initial git commit message
 - `currentBuildTime` (optional): The initial build timestamp
@@ -257,16 +254,16 @@ const { checkNow } = useVersion();
 
 ## How It Works
 
-1. **Build Time**: During build, a `app-version.json` file is generated with version info and timestamp
+1. **Build Time**: During build, a `app-version.json` file is generated with version info, buildId, and timestamp
 2. **Runtime**: The app periodically fetches this file to check for updates
-3. **Detection**: If the version/timestamp differs, `updateAvailable` becomes `true`
+3. **Detection**: If the buildId differs, `updateAvailable` becomes `true`
 4. **User Action**: User clicks "Refresh" or "Hard Refresh" to update
 
 ## Supported Build Tools
 
 - ✅ **Create React App** (react-scripts)
-- ✅ **Vite** (coming soon)
-- ✅ **Webpack** (coming soon)
+- ✅ **Vite**
+- ✅ **Webpack**
 
 ## Browser Support
 
