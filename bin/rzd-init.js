@@ -135,8 +135,23 @@ try {
 }
 
 console.log('\n🎉 Setup complete!\n');
-console.log('Next steps:');
-console.log('1. Wrap your app with <VersionProvider> in src/index.tsx');
-console.log('2. Add <UpdateBanner> or <UpdatePrompt> to your App component');
-console.log('3. Run: npm run build\n');
+
+// Always run the initial build to generate version files
+console.log('🚀 Generating version files...\n');
+try {
+  execSync('npm run build', { cwd, stdio: 'inherit' });
+  console.log('\n✅ Version files generated successfully!\n');
+  console.log('Next steps:');
+  console.log('1. ✅ Version files created in src/version.ts');
+  console.log('2. Wrap your app with <VersionProvider> in src/index.tsx');
+  console.log('3. Run: npm run build (when ready to deploy)\n');
+} catch (error) {
+  console.log('\n⚠️  Build completed with warnings (this is normal for first setup).\n');
+  console.log('Next steps:');
+  console.log('1. ✅ Version files should be created in src/version.ts');
+  console.log('2. Wrap your app with <VersionProvider> in src/index.tsx (import from ./version)');
+  console.log('3. Add <UpdateBanner> or <UpdatePrompt> to your App component');
+  console.log('4. Run: npm run build (when ready to deploy)\n');
+}
+
 console.log('See documentation: https://github.com/vksco/react-zero-downtime-build\n');
