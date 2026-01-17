@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2024-01-18
+
+### Breaking Changes
+- **API Cleanup**: Removed redundant `commit` field from version data structures
+- **VersionProvider**: Removed `currentCommit` prop (redundant with `buildId`)
+- **Constants**: Removed `CURRENT_COMMIT` generation (always null)
+- **Data Structure**: Fixed version comparison inconsistencies
+
+### Added
+- **Full Vite Support**: Vite adapter now fully implemented
+- **Full Webpack Support**: Webpack adapter now fully implemented
+
+### Changed
+- **Version Comparison**: Now uses `buildId` consistently for update detection
+- **Data Consistency**: Fixed `timestamp` vs `buildTime` field mismatches
+- **Documentation**: Updated README with accurate API examples
+
+### Removed
+- **Legacy Code**: Removed unused `generate-version.ts` and `build-merge.ts` files
+- **Redundant Fields**: Eliminated duplicate commit information
+
+### Fixed
+- **Type Safety**: Resolved TypeScript inconsistencies
+- **Build Process**: Cleaned up version generation logic
+
 ## [0.1.2] - 2025-12-21
 
 ### Changed
@@ -42,7 +67,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - TypeScript projects
 
 ### Coming Soon
-- Vite adapter
-- Webpack adapter
 - Advanced caching strategies
 - Custom notification templates
